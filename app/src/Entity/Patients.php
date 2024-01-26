@@ -22,10 +22,10 @@ class Patients
     #[ORM\Column(length: 255)]
     private ?string $adress = null;
 
-    #[ORM\OneToMany(mappedBy: 'idPatient', targetEntity: Visits::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Visits::class, orphanRemoval: true)]
     private Collection $visits;
 
-    #[ORM\OneToMany(mappedBy: 'idUser', targetEntity: Prescription::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Prescription::class, orphanRemoval: true)]
     private Collection $prescriptions;
 
     public function __construct()
