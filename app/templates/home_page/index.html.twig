@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomePageController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="lead">
+                            SoigneMoi est un établissement hospitalier moderne et accueillant, dédié à la prise en charge
+                            complète de la santé de ses patients. Situé dans un cadre paisible, l'hôpital offre des
+                            installations médicales de pointe, des équipements de dernière génération et un personnel
+                            hautement qualifié.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="lead">
+                            L'architecture de SoigneMoi favorise une atmosphère apaisante, avec des espaces lumineux et des
+                            zones de détente pour assurer le bien-être des patients. Les différentes unités médicales sont
+                            conçues pour répondre aux besoins variés des patients, allant des services d'urgence aux soins
+                            spécialisés.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="lead">
+                            Le personnel dévoué de SoigneMoi, composé de médecins, infirmières et professionnels de la
+                            santé, travaille ensemble pour offrir des soins de qualité et personnalisés. La mission de
+                            l'hôpital est de promouvoir la guérison, le confort et la sécurité des patients, en mettant
+                            l'accent sur une approche holistique de la médecine.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="lead">
+                            SoigneMoi s'engage à rester à la pointe de la technologie médicale et à suivre les normes les
+                            plus strictes en matière de soins de santé. Cet établissement s'efforce constamment
+                            d'assurer un environnement propice à la guérison et à la récupération, tout en offrant un
+                            soutien compassionnel à chaque patient qui franchit ses portes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        {% for speciality in specialities %}
+                            <div class="lead">
+                                {{ speciality.name }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
