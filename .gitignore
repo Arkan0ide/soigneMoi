@@ -1,2 +1,4 @@
 .mysql
 .idea
+/vendor
+/node_modules
