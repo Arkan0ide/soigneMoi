@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DoctorsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DoctorsRepository::class)]
@@ -23,6 +25,14 @@ class Doctors
     #[ORM\ManyToOne(inversedBy: 'doctors')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Specialities $speciality = null;
+
+    #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: Schedule::class, orphanRemoval: true)]
+    private Collection $schedules;
+
+    public function __construct()
+    {
+        $this->schedules = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -62,6 +72,36 @@ class Doctors
     public function setSpeciality(?Specialities $speciality): static
     {
         $this->speciality = $speciality;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Schedule>
+     */
+    public function getSchedules(): Collection
+    {
+        return $this->schedules;
+    }
+
+    public function addSchedule(Schedule $schedule): static
+    {
+        if (!$this->schedules->contains($schedule)) {
+            $this->schedules->add($schedule);
+            $schedule->setDoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSchedule(Schedule $schedule): static
+    {
+        if ($this->schedules->removeElement($schedule)) {
+            // set the owning side to null (unless already changed)
+            if ($schedule->getDoctor() === $this) {
+                $schedule->setDoctor(null);
+            }
+        }
 
         return $this;
     }
