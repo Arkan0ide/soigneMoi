@@ -42,8 +42,10 @@ class RegistrationController extends AbstractController
             $user->setLastname($form->get('user')->get('lastname')->getData());
             if($route == 'app_admin'){
                 $user->setDoctors($doctor);
+                $user->setRoles(['ROLE_DOCTOR']);
             }else if($route == 'app_register'){
                 $user->setPatients($patient);
+                $user->setRoles(['ROLE_PATIENT']);
             }
             // encode the plain password
             $user->setPassword(
