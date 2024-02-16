@@ -21,6 +21,23 @@ class ScheduleRepository extends ServiceEntityRepository
         parent::__construct($registry, Schedule::class);
     }
 
+    // Returns list of patients for authenticated doctor
+    public function findPatientByDoctor($doctor): array
+    {
+        $day = new \DateTimeImmutable('now');
+        $startOfDay = $day->setTime(0, 0, 0);
+        $endOfDay = $day->setTime(23, 59, 59);
+        $day = $day->format('Y-m-d');
+        return $this->createQueryBuilder('s')
+            ->where('s.doctor = :doctor')
+            ->andWhere('(:startOfToday <= s.dateTimeBegin AND :endOfToday >= s.dateTimeEnd)')
+            ->setParameter('doctor', $doctor)
+            ->setParameter('endOfToday', $endOfDay)
+            ->setParameter('startOfToday', $startOfDay)
+            ->orderBy('s.dateTimeBegin', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Schedule[] Returns an array of Schedule objects
 //     */

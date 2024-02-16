@@ -2,11 +2,24 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\OpinionsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OpinionsRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new Post(),
+        new GetCollection()
+    ],
+    denormalizationContext: ['groups' => ['opinions:write']],
+)]
 class Opinions
 {
     #[ORM\Id]
@@ -15,17 +28,30 @@ class Opinions
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['postPrescription', 'getPatient'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['postPrescription' , 'getPatient'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['postPrescription', 'getPatient'])]
     private ?string $description = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Prescription $prescription = null;
+    #[ORM\OneToOne(inversedBy: 'opinion', cascade: ['persist', 'remove'])]
+    #[Groups(['postPrescription'])]
+    private ?Prescription $prescription;
+
+    public function getPrescription(): ?Prescription
+    {
+        return $this->prescription;
+    }
+
+    public function setPrescription(?Prescription $prescription): void
+    {
+        $this->prescription = $prescription;
+    }
 
     public function getId(): ?int
     {
@@ -68,15 +94,4 @@ class Opinions
         return $this;
     }
 
-    public function getPrescription(): ?Prescription
-    {
-        return $this->prescription;
-    }
-
-    public function setPrescription(Prescription $prescription): static
-    {
-        $this->prescription = $prescription;
-
-        return $this;
-    }
 }

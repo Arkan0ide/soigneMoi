@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VisitsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: VisitsRepository::class)]
 class Visits
@@ -12,19 +13,24 @@ class Visits
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getVisitsOfDay'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'visits')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['getVisitsOfDay'])]
     private ?Patients $patient = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['getVisitsOfDay', 'getPatient'])]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['getVisitsOfDay', 'getPatient'])]
     private ?\DateTimeInterface $EndDate = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['getPatient'])]
     private ?string $reason = null;
 
     #[ORM\ManyToOne]

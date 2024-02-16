@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Repository\MedicationsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MedicationsRepository::class)]
 #[ApiResource(
@@ -26,13 +27,16 @@ class Medications
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['postPrescription', 'getPatient'])]
     private ?Drugs $drug = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['postPrescription', 'getPatient'])]
     private ?string $dosage = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['postPrescription'])]
     private ?Prescription $prescription = null;
 
     public function getId(): ?int

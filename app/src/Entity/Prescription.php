@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PrescriptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PrescriptionRepository::class)]
 class Prescription
@@ -18,20 +20,29 @@ class Prescription
 
     #[ORM\ManyToOne(inversedBy: 'prescriptions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['postPrescription'])]
     private ?Patients $user = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['postPrescription'])]
     private ?Doctors $doctor = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['postPrescription'])]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['postPrescription'])]
     private ?\DateTimeInterface $endDate = null;
 
-    #[ORM\OneToMany(mappedBy: 'prescription', targetEntity: Medications::class)]
-    private Collection $medication;
+    #[ORM\OneToMany(mappedBy: 'prescription', targetEntity: Medications::class, cascade: ['persist', 'remove'])]
+    #[Groups(['postPrescription', 'getPatient'])]
+    private Collection $MedicationList;
+
+    #[ORM\OneToOne(mappedBy: 'prescription', cascade: ['persist', 'remove'])]
+    #[Groups(['getPatient'])]
+    private ?Opinions $opinion;
 
     public function __construct()
     {
@@ -99,7 +110,7 @@ class Prescription
         return $this->MedicationList;
     }
 
-    public function addMedicationList(Medications $medication): static
+    public function addMedicationList($medication): static
     {
         if (!$this->MedicationList->contains($medication)) {
             $this->MedicationList->add($medication);
@@ -113,4 +124,16 @@ class Prescription
         $this->MedicationList->removeElement($medication);
         return $this;
     }
+
+    public function getOpinion()
+    {
+        return $this->opinion;
+    }
+
+    public function setOpinion($opinion): void
+    {
+        $this->opinion = $opinion;
+    }
 }
+
+
