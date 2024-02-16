@@ -9,9 +9,7 @@
 </style>
 
 <div class="example-wrapper">
-    {% for flashMessage in app.flashes('error') %}
-        <div class="alert alert-danger">{{ flashMessage }}</div>
-    {% endfor %}
+
     {{ form_start(scheduleForm) }}
     {{ form_row(scheduleForm.doctor) }}
 
