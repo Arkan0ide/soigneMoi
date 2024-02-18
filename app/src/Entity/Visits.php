@@ -93,7 +93,7 @@ class Visits
         return $this->doctor;
     }
 
-    public function setDoctor(?Doctors $idDoctor): static
+    public function setDoctor(?Doctors $doctor): static
     {
         $this->doctor = $doctor;
 
