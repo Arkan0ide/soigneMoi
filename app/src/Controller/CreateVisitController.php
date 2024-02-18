@@ -21,12 +21,18 @@ class CreateVisitController extends AbstractController
         $visitForm->handleRequest($request);
 
         if ($visitForm->isSubmitted() && $visitForm->isValid()) {
-            $visit->setPatient($this->getUser()->getPatients());
-            $entityManager->persist($visit);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_profile');
+            try {
+                $visit->setPatient($this->getUser()->getPatients());
+                $entityManager->persist($visit);
+                $entityManager->flush();
+                $this->addFlash('success', 'Le séjour a été ajouté avec succès.');
+                return $this->redirectToRoute('app_profile');
+            } catch (\Exception $e) {
+                $this->addFlash('error', $e->getMessage());
+                return $this->redirectToRoute('app_create_visit');
+            }
         }
+
 
         return $this->render('create_visit/index.html.twig', [
             'visitForm' => $visitForm->createView()

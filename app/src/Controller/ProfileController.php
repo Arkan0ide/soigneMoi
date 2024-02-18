@@ -19,8 +19,7 @@ class ProfileController extends AbstractController
         $patient = $user->getPatients();
 
         if($user) {
-            $visits = $visitsRepository->findBy(['patient' => $patient]);
-        }
+            $visits = $visitsRepository->findBy(['patient' => $patient], ['startDate' => 'ASC']);        }
 
         return $this->render('profile/index.html.twig', [
             'visits' => $visits

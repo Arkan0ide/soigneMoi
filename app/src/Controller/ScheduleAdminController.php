@@ -22,9 +22,11 @@ class ScheduleAdminController extends AbstractController
             try {
                 $entityManager->persist($schedule);
                 $entityManager->flush();
-                return $this->redirectToRoute('app_home_page');
+                $this->addFlash('success', 'Le planning a été créé avec succès.');
+                return $this->redirectToRoute('app_admin_schedule');
             } catch (\Exception $e) {
                 $this->addFlash('error', $e->getMessage());
+                return $this->redirectToRoute('app_profile');
             }
         }
 

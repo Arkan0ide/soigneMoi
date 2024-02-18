@@ -25,10 +25,10 @@ class RegistrationController extends AbstractController
     {
         $route = $request->attributes->get('_route');
 
-        if($route == 'app_admin'){
+        if ($route == 'app_admin') {
             $doctor = new Doctors();
             $form = $this->createForm(DoctorType::class, $doctor);
-        }else if($route == 'app_register'){
+        } else if ($route == 'app_register') {
             $patient = new Patients();
             $form = $this->createForm(PatientType::class, $patient);
         }
@@ -36,35 +36,43 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = new Users();
-            $user->setEmail($form->get('user')->get('email')->getData());
-            $user->setFirstname($form->get('user')->get('firstname')->getData());
-            $user->setLastname($form->get('user')->get('lastname')->getData());
-            if($route == 'app_admin'){
-                $user->setDoctors($doctor);
-                $user->setRoles(['ROLE_DOCTOR']);
-            }else if($route == 'app_register'){
-                $user->setPatients($patient);
-                $user->setRoles(['ROLE_PATIENT']);
-            }
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('user')->get('plainPassword')->getData()
-                )
-            );
 
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
-            if($route == 'app_register'){
-                return $userAuthenticator->authenticateUser(
-                    $user,
-                    $authenticator,
-                    $request
+            try {
+                $user = new Users();
+                $user->setEmail($form->get('user')->get('email')->getData());
+                $user->setFirstname($form->get('user')->get('firstname')->getData());
+                $user->setLastname($form->get('user')->get('lastname')->getData());
+                if ($route == 'app_admin') {
+                    $user->setDoctors($doctor);
+                    $user->setRoles(['ROLE_DOCTOR']);
+                } else if ($route == 'app_register') {
+                    $user->setPatients($patient);
+                    $user->setRoles(['ROLE_PATIENT']);
+                }
+                // encode the plain password
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('user')->get('plainPassword')->getData()
+                    )
                 );
+                $entityManager->persist($user);
+                $entityManager->flush();
+                if ($route == 'app_admin') {
+                    $this->addFlash('success', 'Le médecin a été ajouté avec succès.');
+                    return $this->redirectToRoute('app_admin');
+                } else if ($route == 'app_register') {
+                    return $userAuthenticator->authenticateUser(
+                        $user,
+                        $authenticator,
+                        $request
+                    );
+                }
+            } catch (\Exception $e) {
+                $this->addFlash('error', $e->getMessage());
+                return $this->redirectToRoute('app_create_visit');
             }
+
         }
 
         return $this->render('registration/register.html.twig', [
