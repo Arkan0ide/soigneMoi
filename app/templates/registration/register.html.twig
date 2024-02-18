@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <section class="container">
+        <div class="row">
+            <div class="col">
+                {% if route == "app_register" %}
+                    <h1>Inscription </h1>
+                {% elseif route == "app_admin" %}
+                    <h1>Inscription d'un compte médecin</h1>
+                {% endif %}
+
+                {{ form_errors(registrationForm) }}
+
+                {{ form_start(registrationForm) }}
+                <fieldset class="mb-3">
+                    <legend>Informations de connexion</legend>
+                    {{ form_row(registrationForm.user.email) }}
+                    {{ form_row(registrationForm.user.plainPassword, {
+                        label: 'Mot de passe'
+                    }) }}
+                </fieldset>
+                <fieldset class="mb-3">
+                    {% if route == "app_register" %}
+                        <legend>Informations personnelles</legend>
+                    {% elseif route == "app_admin" %}
+                        <legend>Informations personnelles du médécin</legend>
+                    {% endif %}
+                    {{ form_row(registrationForm.user.firstname) }}
+                    {{ form_row(registrationForm.user.lastname) }}
+
+                    {% if route == "app_register" %}
+                        {{ form_row(registrationForm.adress) }}
+                    {% elseif route == "app_admin" %}
+                        {{ form_row(registrationForm.registrationNumber) }}
+                        {{ form_row(registrationForm.speciality) }}
+                    {% endif %}
+
+                </fieldset>
+                {{ form_row(registrationForm.user.RGPD, {
+                    label: 'Veuillez accepter la RGPD  '
+                }) }}
+
+                <button type="submit" class="btn btn-primary btn-lg my-3">Enregistrer</button>
+                {{ form_end(registrationForm) }}
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

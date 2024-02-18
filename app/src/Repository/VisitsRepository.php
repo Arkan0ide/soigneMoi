@@ -21,6 +21,22 @@ class VisitsRepository extends ServiceEntityRepository
         parent::__construct($registry, Visits::class);
     }
 
+
+    // Returns list of patients for authenticated doctor
+    public function findVisitsOfDay(): array
+    {
+        $day = new \DateTimeImmutable('now');
+        $startOfDay = $day->setTime(0, 0, 0);
+        $endOfDay = $day->setTime(23, 59, 59);
+        return $this->createQueryBuilder('s')
+            ->where('(s.startDate BETWEEN :startOfDay AND :endOfDay)')
+            ->orWhere('(s.EndDate BETWEEN :startOfDay AND :endOfDay)')
+            ->setParameter('endOfDay', $endOfDay)
+            ->setParameter('startOfDay', $startOfDay)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Visits[] Returns an array of Visits objects
 //     */
