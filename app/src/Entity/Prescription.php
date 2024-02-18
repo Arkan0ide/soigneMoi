@@ -16,6 +16,7 @@ class Prescription
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getPatient'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'prescriptions')]

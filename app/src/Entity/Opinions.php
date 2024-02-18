@@ -40,7 +40,7 @@ class Opinions
     private ?string $description = null;
 
     #[ORM\OneToOne(inversedBy: 'opinion', cascade: ['persist', 'remove'])]
-    #[Groups(['postPrescription'])]
+    #[Groups(['postPrescription, getPatient'])]
     private ?Prescription $prescription;
 
     public function getPrescription(): ?Prescription

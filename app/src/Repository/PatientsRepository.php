@@ -51,9 +51,8 @@ public function findPatientDetails(int $idPatient, int $idVisit): ?Patients
         ->select('p', 'v', 'pr', 'o')
         ->innerJoin('p.visits', 'v', 'WITH', 'v.id = :idVisit')
         ->leftJoin('p.prescriptions', 'pr') // Change innerJoin to leftJoin
-        ->leftJoin('pr.opinion', 'o', 'WITH', 'o.date IS NOT NULL AND o.date >= v.startDate AND o.date <= v.EndDate')
+        ->leftJoin('pr.opinion', 'o', 'WITH', 'o.date >= v.startDate AND o.date <= v.EndDate AND o.prescription = pr.id')
         ->where('p.id = :idPatient')
-        ->andWhere('o.date IS NOT NULL')
         ->setParameter('idPatient', $idPatient)
         ->setParameter('idVisit', $idVisit);
 
