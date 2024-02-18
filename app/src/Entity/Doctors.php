@@ -9,6 +9,7 @@ use App\Repository\DoctorsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DoctorsRepository::class)]
 #[ApiResource(
@@ -22,10 +23,12 @@ class Doctors
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getPatients'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'doctors', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['getPatients'])]
     private ?Users $user = null;
 
     #[ORM\Column(length: 255)]

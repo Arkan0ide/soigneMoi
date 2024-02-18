@@ -47,7 +47,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/(profile|create/visit), roles: ROLE_PATIENT }
+         - { path: ^/(profile), roles: ROLE_PATIENT }
+         - { path: ^/(api/patients | api/prescription), roles: ROLE_DOCTOR }
 
 
 when@test:

@@ -18,13 +18,11 @@ class ScheduleAdminController extends AbstractController
         $schedule = new Schedule();
         $scheduleForm = $this->createForm(ScheduleFormType::class, $schedule);
         $scheduleForm->handleRequest($request);
-
         if ($scheduleForm->isSubmitted() && $scheduleForm->isValid()) {
             try {
                 $entityManager->persist($schedule);
                 $entityManager->flush();
-
-                return $this->redirectToRoute('app_profile');
+                return $this->redirectToRoute('app_home_page');
             } catch (\Exception $e) {
                 $this->addFlash('error', $e->getMessage());
             }

@@ -3,14 +3,41 @@
 {% block title %}Hello HomePageController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        .services-title {
+            font-size: 2.5em;
+            color: #007BFF;
+            text-align: center;
+            margin-top: 1em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeIn 2s;
+        }
+        @keyframes fadeIn {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+        .speciality-icon {
+            font-size: 2em;
+            color: #007BFF;
+        }
+        .contact-info {
+            font-size: 1.4em;
+            color: #333;
+        }
+    </style>
+    <div class="row">
+        <!-- Colonne pour l'image -->
+        <div class="col-md-6">
+            <img src="{{ asset('images/building.jpg') }}" alt="Building" style="width: 100%;">
+        </div>
+
+        <!-- Colonne pour les blocs de description -->
+        <div class="col-md-6 d-flex flex-column">
+            <div class="container mt-4 flex-grow-1 d-flex flex-column">
+                <div class="card flex-grow-1">
                     <div class="card-body">
                         <p class="lead">
                             SoigneMoi est un établissement hospitalier moderne et accueillant, dédié à la prise en charge
@@ -20,12 +47,7 @@
                         </p>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
+                <div class="card flex-grow-1">
                     <div class="card-body">
                         <p class="lead">
                             L'architecture de SoigneMoi favorise une atmosphère apaisante, avec des espaces lumineux et des
@@ -35,12 +57,7 @@
                         </p>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
+                <div class="card flex-grow-1">
                     <div class="card-body">
                         <p class="lead">
                             Le personnel dévoué de SoigneMoi, composé de médecins, infirmières et professionnels de la
@@ -50,12 +67,7 @@
                         </p>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
+                <div class="card flex-grow-1">
                     <div class="card-body">
                         <p class="lead">
                             SoigneMoi s'engage à rester à la pointe de la technologie médicale et à suivre les normes les
@@ -67,20 +79,32 @@
                 </div>
             </div>
         </div>
-
-        <div class="row mt-4">
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
-                    <div class="card-body">
-                        {% for speciality in specialities %}
-                            <div class="lead">
-                                {{ speciality.name }}
-                            </div>
-                        {% endfor %}
+    </div>
+    <div class="row">
+        <!-- Colonne pour 'Nos services' et les spécialités -->
+        <div class="col-md-6">
+            <h2 class="services-title">Nos services :</h2>
+            <div class="container mt-4 d-flex flex-column align-items-center">
+                {% for speciality in specialities %}
+                    <div class="d-flex align-items-center">
+                        <i class="speciality-icon fas fa-stethoscope"></i>
+                        <div class="lead ml-3">
+                            {{ speciality.name }}
+                        </div>
                     </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Colonne pour les informations de contact -->
+        <div class="col-md-6 d-flex flex-column align-items-center">
+            <div class="container">
+                <h2 class="services-title">Contactez-nous :</h2>
+                <div class="contact-info text-center">
+                    <p><strong>Adresse :</strong> 123 Rue de l'Hôpital, Ville</p>
+                    <p><strong>Téléphone :</strong> +33 1 23 45 67 89</p>
+                    <p><strong>Email :</strong> contact@hopital.com</p>
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock %}

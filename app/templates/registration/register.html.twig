@@ -6,7 +6,11 @@
     <section class="container">
         <div class="row">
             <div class="col">
-                <h1>Inscription</h1>
+                {% if route == "app_register" %}
+                    <h1>Inscription </h1>
+                {% elseif route == "app_admin" %}
+                    <h1>Inscription d'un compte médecin</h1>
+                {% endif %}
 
                 {{ form_errors(registrationForm) }}
 
@@ -19,7 +23,11 @@
                     }) }}
                 </fieldset>
                 <fieldset class="mb-3">
-                    <legend>Informations personnelles</legend>
+                    {% if route == "app_register" %}
+                        <legend>Informations personnelles</legend>
+                    {% elseif route == "app_admin" %}
+                        <legend>Informations personnelles du médécin</legend>
+                    {% endif %}
                     {{ form_row(registrationForm.user.firstname) }}
                     {{ form_row(registrationForm.user.lastname) }}
 

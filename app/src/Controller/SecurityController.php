@@ -8,9 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class SecurityController extends AbstractController
 {
@@ -18,7 +18,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
-             return $this->redirectToRoute('profile');
+             return $this->redirectToRoute('app_profile');
          }
 
         // get the login error if there is one
@@ -30,19 +30,19 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/api/login', name: 'api_login', methods: ['POST'])]
-    public function apiLogin(Request $request, PasswordHasherInterface $passwordHasher,
+    public function apiLogin(Request $request,
                              JWTTokenManagerInterface $jwtManager, UsersRepository $usersRepository): JsonResponse
     {
         // Récupérer les données d'identification envoyées par l'application ElectronJS
         $data = json_decode($request->getContent(), true);
-        $email = $data['email'] ?? null;
+        $email = $data['username'] ?? null;
         $password = $data['password'] ?? null;
 
         // Trouver l'utilisateur correspondant à l'e-mail
         $user = $usersRepository->findOneBy(['email' => $email]);
-
+//        $passwordHasher = $this->container->get('security.password_hasher');
         // Vérifier les identifiants de l'utilisateur
-        if (!$user || !$passwordHasher->verify($user->getPassword(), $password)) {
+        if (!$user || !password_verify($password, $user->getPassword())) {
             throw new AuthenticationException('Identifiants invalides');
         }
 
