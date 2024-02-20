@@ -12,14 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OpinionsRepository::class)]
-#[ApiResource(
-    operations: [
-        new Get(),
-        new Post(),
-        new GetCollection()
-    ],
-    denormalizationContext: ['groups' => ['opinions:write']],
-)]
+
 class Opinions
 {
     #[ORM\Id]
