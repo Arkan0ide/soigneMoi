@@ -34,4 +34,5 @@
     ```bash
     symfony console doctrine:fixtures:load
     ```
+7. Se rendre sur localhost:8080/ pour la WebApp et localhost:8899/ pour la BDD
 
