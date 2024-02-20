@@ -22,11 +22,16 @@
 
 4. Configurer le fichier `.env` avec les valeurs nécessaires, y compris les secrets.
     ```bash
-    openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
+    mkdir -p config/jwt && \
+    openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 && \
     openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
     ```
-5. Exécuter les migrations de la base de données :
-    ```bash
+    
+Un problème récurrent de droit est présent à la génération des clés.
+Dans le docker, l'utilisateur est www-data qui fait partie du group other. Pour lire ces fichiers, cela demande les droits 7 sur le group other.
+Ce n'est pas recommmandé mais sans cela l'accès à l'api n'est pas possible. 
+
+5. Exécuter les migrations de la base de données :    ```bash
     symfony console doctrine:migrations:migrate
     ```
 
@@ -40,8 +45,3 @@
     ```bash
    docker cp /etc/ssl/certs/ca-certificates.crt mon_conteneur:/etc/ssl/certs/ca-certificates.crt
     ```
-
-   mkdir -p config/jwt && \
-openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 && \
-openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout && \
-chmod 644 config/jwt config/jwt/*
