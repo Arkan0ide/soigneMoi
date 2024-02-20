@@ -17,6 +17,7 @@
 3. Installer les dépendances PHP avec Composer :
     ```bash
     composer install
+    symfony console importmap:install
     ```
 
 4. Configurer le fichier `.env` avec les valeurs nécessaires, y compris les secrets.
@@ -33,3 +34,4 @@
     ```bash
     symfony console doctrine:fixtures:load
     ```
+
