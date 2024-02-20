@@ -31,7 +31,8 @@ Un problème récurrent de droit est présent à la génération des clés.
 Dans le docker, l'utilisateur est www-data qui fait partie du group other. Pour lire ces fichiers, cela demande les droits 7 sur le group other.
 Ce n'est pas recommmandé mais sans cela l'accès à l'api n'est pas possible. 
 
-5. Exécuter les migrations de la base de données :    ```bash
+5. Exécuter les migrations de la base de données :
+   ```bash
     symfony console doctrine:migrations:migrate
     ```
 
