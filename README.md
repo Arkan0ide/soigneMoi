@@ -36,9 +36,9 @@
     ```
 7. Se rendre sur localhost:8080/ pour la WebApp et localhost:8899/ pour la BDD
 
-8. En cas d'erreur lié au certificat ssl :
-   ``bash
+8. En cas d'erreur lié au certificat ssl (mon_conteneur est obtenu via la commande docker ps) :
+    ```bash
    docker cp /etc/ssl/certs/ca-certificates.crt mon_conteneur:/etc/ssl/certs/ca-certificates.crt
-   ```
-   mon_conteneur est obtenu via la commande docker ps
+    ```
 
+   
