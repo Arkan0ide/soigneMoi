@@ -26,6 +26,11 @@ class AppFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
+        $day = new \DateTime('now');
+        $startSchedule = $day->setTime(9, 0, 0)->format('Y-m-d H:i:s');;
+        $endSchedule = $day->setTime(10, 0, 0)->format('Y-m-d H:i:s');;
+        $day = $day->format('Y-m-d');
+
         $usersData = [
             [1, 'admin@soignemoi.com', '["ROLE_ADMIN"]', 'admin', 'Admin', 'Soignemoi'],
             [2, 'secretariat@soignemoi.com', '["ROLE_SECRETARIAT"]', 'secretariat', 'Secrétariat', 'Soignemoi'],
@@ -110,12 +115,11 @@ class AppFixtures extends Fixture
 
         $prescriptionsData = [
             [1, 1, 1, '2024-02-15', '2024-02-22'],
-            [2, 2, 2, '2024-02-16', '2024-02-23'],
-            [3, 2, 2, '2024-02-01', '2024-02-15'],
-            [4, 3, 3, '2024-02-05', '2024-02-12'],
-            [5, 3, 3, '2024-01-25', '2024-02-01'],
-            [6, 3, 3, '2023-12-20', '2023-12-27'],
-            [7, 4, 4, '2024-02-10', '2024-02-17']
+            [2, 3, 2, '2024-02-20', '2024-02-20'],
+            [3, 3, 2, '2024-02-21', '2024-02-21'],
+            [4, 3, 2, '2024-02-22', '2024-02-22'],
+            [5, 2, 2, '2024-02-01', '2024-02-15'],
+            [6, 1, 3, $day, $day]
         ];
 
         foreach ($prescriptionsData as $prescriptionData) {
@@ -128,13 +132,12 @@ class AppFixtures extends Fixture
         }
 
         $opinionsData = [
-            [1, 'Avis positif', '2024-02-20', 'Efficacité et bien-être ressentis.'],
-            [2, 'Maux de tête', '2024-02-22', 'Nausées et maux de tête.'],
-            [3, 'Phase terminale', '2024-02-10', 'Le patient est dans le coma'],
-            [4, 'RAS', '2024-02-07', 'RAS'],
+            [1, 'Pré-op', '2024-02-15', 'Grosse opération à prévoir'],
+            [2, 'Maux de tête', '2024-02-20', 'Nausées et maux de tête.'],
+            [3, 'Etat instable', '2024-02-21', 'Le patient est dans le coma'],
+            [4, 'Aucune amélioration', '2024-02-22', 'RAS'],
             [5, 'Sortie', '2024-02-01', 'Patient guérie'],
-            [6, 'Entrée du patient', '2023-12-20', 'Douleur cranienne'],
-            [7, 'Effets secondaires', '2024-02-15', 'Nausées et maux de tête.']
+            [6, 'Etat stable', $day, 'Patient non reveillé, état stabilisé']
         ];
 
         foreach ($opinionsData as $opinionData) {
@@ -151,13 +154,9 @@ class AppFixtures extends Fixture
             [1, 1, 1, '1000mg'],
             [2, 2, 3, '500mg'],
             [3, 3, 2, '200mg'],
-            [4, 4, 3, '500mg'],
+            [4, 4, 4, '500mg'],
             [5, 5, 5, '250mg'],
-            [6, 1, 6, '500mg'],
-            [7, 2, 6, '1000mg'],
-            [8, 3, 6, '200mg'],
-            [9, 4, 7, '500mg'],
-            [10, 5, 7, '250mg']
+            [6, 5, 6, '1000mg'],
         ];
 
         foreach ($medicationsData as $medicationData) {
@@ -167,18 +166,17 @@ class AppFixtures extends Fixture
             $medication->setDosage($medicationData[3]);
             $manager->persist($medication);
         }
-
         $visitsData = [
             [1, 1, 1, '2024-02-15', '2024-02-15', 'Consultation générale'],
-            [1, 2, 1, '2024-02-01', '2024-02-01', 'Contrôle cardiologique'],
+            [1, 3, 2, '2024-02-20', '2024-06-30', 'Opération lourde'],
             [2, 1, 1, '2024-02-10', '2024-02-10', 'Consultation générale'],
-            [2, 3, 2, '2024-02-05', '2024-02-05', 'Suivi psychiatrique'],
-            [3, 1, 1, '2024-02-08', '2024-02-08', 'Consultation générale'],
-            [4, 4, 3, '2024-02-12', '2024-02-12', 'Vaccination'],
-            [1, 1, 1, '2024-02-22', '2024-02-22', 'Suivi post-opératoire'],
-            [2, 1, 1, '2024-02-17', '2024-02-17', 'Consultation générale'],
-            [3, 1, 2, '2024-02-15', '2024-02-15', 'Douleur cardiaque'],
-            [4, 4, 3, '2024-02-19', '2024-02-19', 'Rappel de vaccin']
+            [2, 4, 3, '2024-02-05', '2024-02-05', 'Suivi psychiatrique'],
+            [3, 2, 1, '2024-02-08', '2024-02-08', 'Consultation générale'],
+            [4, 2, 1, '2024-02-12', '2024-02-12', 'Vaccination'],
+            [1, 3, 2, '2024-07-20', '2024-07-20', 'Suivi post-opératoire'],
+            [2, 2, 1, '2024-02-17', '2024-02-17', 'Consultation générale'],
+            [3, 3, 2, '2024-02-15', '2024-02-15', 'Douleur cardiaque'],
+            [4, 1, 1, '2024-02-19', '2024-02-19', 'Rappel de vaccin']
         ];
 
         foreach ($visitsData as $visitData) {
@@ -192,9 +190,13 @@ class AppFixtures extends Fixture
             $manager->persist($visit);
         }
 
+
+
         $scheduleData = [
-            [1, 1, '2024-02-29T09:00:00', '2024-02-29T10:00:00'],
-            [1, 2, '2024-03-15T09:00:00', '2024-03-15T10:00:00'],
+            [1, 1, '2024-02-15T09:00:00', '2024-02-15T10:00:00'],
+            [3, 1, '2024-02-20T09:00:00', '2024-02-20T10:00:00'],
+            [3, 1, '2024-02-21T09:00:00', '2024-02-21T10:00:00'],
+            [3, 1, $startSchedule, $endSchedule],
             [2, 3, '2024-02-24T10:00:00', '2024-02-24T11:00:00'],
             [3, 4, '2024-03-01T14:00:00', '2024-03-01T15:00:00'],
             [4, 1, '2024-03-08T10:00:00', '2024-03-08T11:00:00']

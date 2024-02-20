@@ -14,14 +14,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[ApiResource(
-    operations: [
-        new Get(),
-        new GetCollection(),
-        new Post(),
-    ]
-)]
+#[UniqueEntity(fields: ['email'], message: 'Il y existe déjà un compte avec cet e-mail')]
+
 
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {

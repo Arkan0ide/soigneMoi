@@ -11,13 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MedicationsRepository::class)]
-#[ApiResource(
-    operations: [
-        new Get(),
-        new Post(),
-        new GetCollection()
-    ]
-)]
 class Medications
 {
     #[ORM\Id]

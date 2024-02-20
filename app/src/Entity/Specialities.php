@@ -9,8 +9,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpecialitiesRepository::class)]
-#[ApiResource]
-
 class Specialities
 {
     #[ORM\Id]
