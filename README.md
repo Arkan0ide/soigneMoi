@@ -19,8 +19,11 @@
     composer install
     ```
 
-4. Configurer le fichier `.env` avec les valeurs nécessaires, y compris les secrets et la clé de génération.
-
+4. Configurer le fichier `.env` avec les valeurs nécessaires, y compris les secrets.
+    ```bash
+    openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
+    openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
+    ```
 5. Exécuter les migrations de la base de données :
     ```bash
     symfony console doctrine:migrations:migrate
