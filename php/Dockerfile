@@ -17,15 +17,17 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
-RUN composer install \
-    && symfony console importmap:install \
-    && symfony console doctrine:migrations:migrate \
-    && symfony console doctrine:fixtures:load
 # Définition du répertoire de travail
 WORKDIR /var/www
 
 # Copie du code source de l'application
 COPY . /var/www
+
+# Exécution des commandes Symfony et Composer
+RUN composer install \
+    && symfony console importmap:install \
+    && symfony console doctrine:migrations:migrate \
+    && symfony console doctrine:fixtures:load
 
 # Exposition du port 8080 (à adapter si nécessaire)
 EXPOSE 8080
