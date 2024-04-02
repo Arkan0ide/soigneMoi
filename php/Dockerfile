@@ -17,11 +17,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
-# Définition du répertoire de travail
+# Création du répertoire de travail
 WORKDIR /var/www
 
-# Copie du code source de l'application
-COPY . /var/www
+# Copie des fichiers de l'application dans le conteneur
+COPY . .
 
 # Exécution des commandes Symfony et Composer
 RUN composer install \
