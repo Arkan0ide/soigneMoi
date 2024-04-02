@@ -1,6 +1,5 @@
 FROM php:8.2-apache
 
-# Installation des dépendances PHP nécessaires
 RUN apt-get update \
     && apt-get install -y zlib1g-dev g++ git libicu-dev zip libzip-dev zip \
     && docker-php-ext-install intl opcache pdo pdo_mysql \
@@ -10,27 +9,11 @@ RUN apt-get update \
     && docker-php-ext-install zip \
     && apt-get install -y ca-certificates
 
-# Installation de Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN a2enmod rewrite && a2enmod ssl && a2enmod socache_shmcb
 
-# Installation de Symfony CLI
-RUN curl -sS https://get.symfony.com/cli/installer | bash \
-    && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
-
-# Création du répertoire de travail
 WORKDIR /var/www
 
-# Copie des fichiers de l'application dans le conteneur
-COPY . .
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Exécution des commandes Symfony et Composer
-RUN composer install \
-    && symfony console importmap:install \
-    && symfony console doctrine:migrations:migrate \
-    && symfony console doctrine:fixtures:load
-
-# Exposition du port 8080 (à adapter si nécessaire)
-EXPOSE 8080
-
-# Commande par défaut pour démarrer l'application Symfony
-CMD ["symfony", "server:start", "--port=8080", "--no-tls"]
+RUN curl -sS https://get.symfony.com/cli/installer | bash
+RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
