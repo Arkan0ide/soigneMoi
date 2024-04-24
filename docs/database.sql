@@ -110,7 +110,7 @@ INSERT INTO `users`(`id`, `email`, `roles`, `password`, `firstname`, `lastname`)
 INSERT INTO `doctors`(`id`, `user_id`, `speciality_id`, `registration_number`) VALUES (1,1,1,123456789);
 INSERT INTO `patients`(`id`, `user_id`, `address`) VALUES (1,2,'Mon adresse');
 INSERT INTO `visits`(`id`, `patient_id`, `doctor_id`, `speciality_id`, `start_date`, `end_date`, `reason`) VALUES (1,1,1,1,'2024-04-14','2024-04-15','Opération');
-INSERT INTO `schedule`(`id`, `doctor_id`, `patient_id`, `date_time_begin`, `date_time_end`) VALUES (1,1,1,'2024-04-15 09:00:00','2024-04-15 10:00:00')
-INSERT INTO `prescription`(`id`, `user_id`, `doctor_id`, `start_date`, `end_date`) VALUES (1,1,1,'2024-04-15','2024-04-18')
+INSERT INTO `schedule`(`id`, `doctor_id`, `patient_id`, `date_time_begin`, `date_time_end`) VALUES (1,1,1,'2024-04-15 09:00:00','2024-04-15 10:00:00');
+INSERT INTO `prescription`(`id`, `user_id`, `doctor_id`, `start_date`, `end_date`) VALUES (1,1,1,'2024-04-15','2024-04-18');
 INSERT INTO `opinions`(`id`, `prescription_id`, `title`, `date`, `description`) VALUES (1,1,'PostOp','2024-04-15','Patient en bonne forme');
-INSERT INTO `medications`(`id`, `drug_id`, `prescription_id`, `dosage`) VALUES (1,1,1,' 2CP par jour')
+INSERT INTO `medications`(`id`, `drug_id`, `prescription_id`, `dosage`) VALUES (1,1,1,' 2CP par jour');

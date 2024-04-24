@@ -32,7 +32,7 @@
                     {{ form_row(registrationForm.user.lastname) }}
 
                     {% if route == "app_register" %}
-                        {{ form_row(registrationForm.adress) }}
+                        {{ form_row(registrationForm.address) }}
                     {% elseif route == "app_admin" %}
                         {{ form_row(registrationForm.registrationNumber) }}
                         {{ form_row(registrationForm.speciality) }}

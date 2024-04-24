@@ -65,7 +65,7 @@ class AppFixtures extends Fixture
         foreach ($patientsData as $patientData) {
             $patient = new Patients();
             $patient->setUser($manager->getReference(Users::class, $patientData[1]));
-            $patient->setAdress($patientData[2]);
+            $patient->setAddress($patientData[2]);
             $manager->persist($patient);
         }
 
