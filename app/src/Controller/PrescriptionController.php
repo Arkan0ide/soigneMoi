@@ -25,8 +25,11 @@ class PrescriptionController extends AbstractController
     {
         try {
             $data = $request->getContent();
-            $json = $serializer->deserialize($data, test::class, 'json');
+            $json = $serializer->deserialize($data, PrescriptionDeserialize::class, 'json');
             $errors = $validator->validate($json);
+            if (count($errors) > 0) {
+                return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
+            }
             $prescription = new Prescription();
 
             $patient = $em->getRepository(Patients::class)->findOneBy(['id' => $json->user]);
@@ -56,9 +59,7 @@ class PrescriptionController extends AbstractController
                 $medication->setDosage($medicationData['dosage']);
                 $prescription->addMedicationList($medication);
             }
-            if (count($errors) > 0) {
-                return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
-            }
+
             $em->persist($prescription);
             $em->flush();
 
@@ -74,7 +75,7 @@ class PrescriptionController extends AbstractController
 
     }
 }
-class test
+class PrescriptionDeserialize
 {
     public $user;
     public $doctor;

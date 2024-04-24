@@ -44,6 +44,18 @@ class PatientsRepository extends ServiceEntityRepository
         }
     }
 
+    public function findPatientByEmail(string $email): ?Patients
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.user', 'u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
+
 
 
 
