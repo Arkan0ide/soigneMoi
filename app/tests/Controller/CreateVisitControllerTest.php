@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Repository\UsersRepository;
+use App\Repository\VisitsRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CreateVisitControllerTest extends WebTestCase
@@ -11,8 +12,6 @@ class CreateVisitControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        // get or create the user somehow (e.g. creating some users only
-        // for tests while loading the test fixtures)
         $userRepository = static::getContainer()->get(UsersRepository::class);
         $testUser = $userRepository->findOneByEmail('patient@soignemoi.com');
 
@@ -37,23 +36,31 @@ class CreateVisitControllerTest extends WebTestCase
 
         $crawler = $client->followRedirect();
         $this->assertSelectorTextContains('div.alert.alert-success', 'Le séjour a été ajouté avec succès.');
+
+        $visitsRepository = static::getContainer()->get(VisitsRepository::class);
+        $createdVisit = $visitsRepository->findOneBy([
+            'startDate' => new \DateTime('2023-01-01'),
+            'EndDate' => new \DateTime('2023-01-02'),
+            'reason' => 'Test visit',
+            'doctor' => '1',
+            'speciality' => '1',
+        ]);
+
+        $this->assertNotNull($createdVisit);
     }
 
-//    public function testCreateVisitWithoutLogin()
-//    {
-//        $client = static::createClient();
-//
-//        // Créer une nouvelle visite
-//        $crawler = $client->request('GET', '/create/visit');
-//        $this->assertSelectorExists('form[name="visits_form"]');
-//
-//        // Vérifier que le bouton "Valider" a la classe "btn-disabled"
-//        $submitButton = $crawler->selectButton('Valider');
-//        $classes = explode(' ', $submitButton->attr('class'));
-//        $this->assertContains('btn:disabled', $classes);
-//
-//        // Vérifier que le bouton "Valider" est désactivé
-//        $this->assertEquals('disabled', $submitButton->attr('disabled'));
-//
-//    }
+    public function testCreateVisitWithoutLogin()
+    {
+        $client = static::createClient();
+
+        // Créer une nouvelle visite
+        $crawler = $client->request('GET', '/create/visit');
+        $this->assertSelectorExists('form[name="visits_form"]');
+
+        // Vérifier que le bouton "Valider" a la classe "btn-disabled"
+        $submitButton = $crawler->selectButton('Valider');
+        $this->assertNotNull($submitButton->attr('disabled'));
+
+
+    }
 }

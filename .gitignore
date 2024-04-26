@@ -1,5 +1,0 @@
-.mysql
-.idea
-/vendor
-/node_modules
-/config/jwt/*.pem
